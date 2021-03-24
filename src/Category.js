@@ -9,7 +9,8 @@ import { useForm } from "react-hook-form"
 import Select from 'react-select'
 import config from './config';
 import { format } from 'date-fns'
-
+import TextField from '@material-ui/core/TextField';
+import { makeStyles } from '@material-ui/core/styles';
 //React icon pack
 import { BsPlus, BsTrash, BsPencil } from "react-icons/bs"
 
@@ -238,7 +239,7 @@ export default function Category() {
                             </Modal.Title>
                         </Modal.Header>
                         <Modal.Body>
-                            <Row>
+                            {/* <Row>
                                 <Col>
                                     <label htmlFor="name">Name</label>
                                 </Col>
@@ -252,8 +253,18 @@ export default function Category() {
                                         defaultValue={tempData.name}
                                     />
                                 </Col>
-                            </Row>
+                            </Row> */}
+
                             <Row>
+                                <Col>
+                                    <TextField style={{ margin: 8 }}
+                                        fullWidth variant="outlined" label="Name"
+                                        inputRef={register({ required: true })}
+                                        defaultValue={tempData.name}
+                                        name="name" />
+                                </Col>
+                            </Row>
+                            {/* <Row>
                                 <Col>
                                     <label htmlFor="name">Description</label>
                                 </Col>
@@ -266,6 +277,15 @@ export default function Category() {
                                         id="description"
                                         defaultValue={tempData.description}
                                     />
+                                </Col>
+                            </Row> */}
+                            <Row>
+                                <Col>
+                                    <TextField style={{ margin: 8 }}
+                                        fullWidth variant="outlined" label="Description"
+                                        inputRef={register({ required: true })}
+                                        defaultValue={tempData.description}
+                                        name="description" />
                                 </Col>
                             </Row>
                         </Modal.Body>

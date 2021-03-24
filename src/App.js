@@ -4,7 +4,7 @@ import {
   Navbar, Nav, NavDropdown,
 } from 'react-bootstrap';
 import {
-  BrowserRouter as Router,
+  HashRouter as Router,
   Switch,
   Route,
   Link
@@ -21,8 +21,8 @@ function App() {
         <Navbar.Toggle aria-controls="responsive-navbar-nav" />
         <Navbar.Collapse id="responsive-navbar-nav">
           <Nav className="mr-auto">
-            <Nav.Link href="/journal">Journal</Nav.Link>
-            <Nav.Link href="/category">Category</Nav.Link>
+            <Nav.Link href="#journal">Journal</Nav.Link>
+            <Nav.Link href="#category">Category</Nav.Link>
           </Nav>
         </Navbar.Collapse>
       </Navbar>
@@ -46,7 +46,7 @@ function App() {
 
 function Home() {
   return (
-    <div>
+    <div style={{ "marginTop": 1 + '%' }}>
       <Container>
         <h1>Home</h1>
       </Container>

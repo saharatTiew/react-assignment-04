@@ -10,6 +10,8 @@ import { BsPlus, BsTrash, BsPencil } from "react-icons/bs";
 import { useForm } from "react-hook-form"
 import config from './config';
 import TextField from '@material-ui/core/TextField';
+import { makeStyles } from '@material-ui/core/styles';
+import MenuItem from '@material-ui/core/MenuItem';
 
 // Firebase
 import { useCollectionData } from 'react-firebase-hooks/firestore';
@@ -22,7 +24,16 @@ if (firebase.apps.length === 0) {
 }
 const firestore = firebase.firestore()
 
+const useStyles = makeStyles((theme) => ({
+    textField: {
+        marginLeft: theme.spacing(1),
+        marginRight: theme.spacing(1),
+        width: '25ch',
+    },
+}));
+
 export default function Journal() {
+    const classes = useStyles();
     // Firebase stuff
     const moneyRef = firestore.collection('money');
     const categoryRef = firestore.collection('category');
@@ -52,7 +63,8 @@ export default function Journal() {
 
     useEffect(() => {
         if (categories) { // Guard condition
-            const tempCategories = [{ id: 0, name: '-- All -- ' }];
+            const tempCategories = [{ id: "0", name: '-- All -- ' }];
+            tempCategories.push({id: "unknown", name: 'Uncategorised'});
             categories.forEach((x) => {
                 tempCategories.push({ id: x.id, name: x.name });
             })
@@ -115,7 +127,7 @@ export default function Journal() {
             category: categoryOption[0]
         })
         setEditMode(false)
-        // setCategory({})
+        setCategory({})
         setShowForm(false)
     }
 
@@ -191,9 +203,10 @@ export default function Journal() {
         setShowForm(true)
     }
 
+    {console.log(category)}
 
     return (
-        <div style={{"marginTop": 1 + '%'}}>
+        <div style={{ "marginTop": 1 + '%' }}>
             <Container>
                 <Row>
                     <Col>
@@ -213,26 +226,26 @@ export default function Journal() {
                     </Col>
 
                 </Row>
-                <div style={{"marginTop": 3 + '%'}}>
-                <Table striped hover>
-                    <thead>
-                        <tr>
-                            <th>#</th>
-                            <th>Date</th>
-                            <th>Description</th>
-                            <th>Category</th>
-                            <th>Amount</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {records}
-                    </tbody>
-                    <tfooter>
-                        <td colSpan={5}>
-                            <h3>Total: {total}</h3>
-                        </td>
-                    </tfooter>
-                </Table>
+                <div style={{ "marginTop": 3 + '%' }}>
+                    <Table striped hover>
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Date</th>
+                                <th>Description</th>
+                                <th>Category</th>
+                                <th>Amount</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {records}
+                        </tbody>
+                        <tfooter>
+                            <td colSpan={5}>
+                                <h3>Total: {total}</h3>
+                            </td>
+                        </tfooter>
+                    </Table>
                 </div>
 
 
@@ -255,7 +268,7 @@ export default function Journal() {
                             </Modal.Title>
                         </Modal.Header>
                         <Modal.Body>
-                            <Row>
+                            {/* <Row>
                                 <Col>
                                     <label htmlFor="createdAt">Date</label>
                                 </Col>
@@ -270,60 +283,84 @@ export default function Journal() {
                                     />
 
                                 </Col>
+                            </Row> */}
+
+                            <Row>
+                                <Col>
+                                    <TextField style={{ margin: 8 }}
+                                        fullWidth variant="outlined" label="CreatedAt"
+                                        type="date" defaultValue={format(tempData.createdAt, "yyyy-MM-dd")}
+                                        inputRef={register({ required: true })}
+                                        name="createdAt" />
+                                </Col>
+                            </Row>
+
+                            {/* <Row>
+                                <Col>
+                                    <TextField style={{ margin: 8 }}
+                                        select fullWidth variant="outlined"
+                                        label="Select Category"
+                                        inputRef={register}
+                                        name="category"
+                                        value= {tempData.category}
+                                    >
+                                        {categoryOption && categoryOption.map((option) => (
+                                            option.id != 0  &&
+                                            <MenuItem key={option.id} value={option.id}>
+                                                {option.name}
+                                            </MenuItem>
+                                        ))}
+                                    </TextField>
+                                </Col>
+                            </Row> */}
+
+                            <Row>
+                                <Col>
+                                    <TextField style={{ margin: 8 }}
+                                        fullWidth variant="outlined" label="Description"
+                                        inputRef={register({ required: true })}
+                                        defaultValue={tempData.description}
+                                        name="description" />
+                                </Col>
                             </Row>
 
                             <Row>
                                 <Col>
-                                    <label htmlFor="category">Category</label>
+                                    <TextField style={{ margin: 8 }}
+                                        fullWidth variant="outlined" label="Amount"
+                                        inputRef={register({ required: true })}
+                                        type="number"
+                                        name="amount"
+                                        defaultValue={tempData.amount}
+                                    />
                                 </Col>
+                            </Row>
+
+                            <Row>
+                                {/* <Col>
+                                    <label htmlFor="category">Category</label>
+                                </Col> */}
                                 <Col>
+                                    <div style={{ "paddingTop": 18.5,
+                                                "paddingRight": 14,
+                                                "paddingBottom": 18.5,
+                                                "paddingLeft": 14}}>
                                     <Select
                                         id="category"
                                         name="category"
                                         value={category}
                                         placeholder="Category"
-                                        options={categoryOption.filter(c => c.id != 0)}
+                                        options={categoryOption.filter(c => c.id !== "0" && c.id != "unknown")}
                                         onChange={handleCategoryChange}
                                         getOptionLabel={x => x.name}
                                         getOptionValue={x => x.id}
                                         ref={register}
+                                    
                                     />
+                                    </div>
                                 </Col>
                             </Row>
 
-                            <Row>
-                                <Col>
-                                    <label htmlFor="description">Description</label>
-                                </Col>
-                                <Col>
-                                    {/* <input
-                                        type="text"
-                                        placeholder="Description"
-                                        ref={register({ required: true })}
-                                        name="description"
-                                        id="description"
-                                        defaultValue={tempData.description}
-                                    /> */}
-                                    <TextField id="standard-basic" label="Standard" inputRef={register({ required: true })} name="description" />
-                                </Col>
-                            </Row>
-                            <Row>
-                                <Col>
-                                    <label htmlFor="amount">Amount</label>
-                                </Col>
-                                <Col>
-                                    <input
-                                        type="number"
-                                        step="any"
-                                        min="0"
-                                        placeholder="Amount"
-                                        ref={register({ required: true })}
-                                        name="amount"
-                                        id="amount"
-                                        defaultValue={tempData.amount}
-                                    />
-                                </Col>
-                            </Row>
                         </Modal.Body>
                         <Modal.Footer>
                             <Button variant="secondary" onClick={handleCloseForm}>
@@ -349,7 +386,7 @@ function onModalFormSubmit(editMode, handleSubmit, onSubmit) {
 function JournalRow(props) {
     let d = props.data
     let i = props.i
-    // { console.log('sdss', d) }
+    // {console.log('sdss', d)}
     // console.log("JournalRow", d)
     return (
         <tr>
