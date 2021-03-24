@@ -50,7 +50,7 @@ export default function Category() {
     const [journalDatas] = useCollectionData(journalQuery, { idField: 'id' })
     // console.log(journalDatas)
 
-    
+
     console.log(journalDatas);
 
     useEffect(() => {
@@ -75,7 +75,7 @@ export default function Category() {
             setCategoryState(mappedRowData)
             console.log("category works", "EUREKA!!!")
         }
-    }, [data])
+    }, [data, journalDatas])
 
     const onSubmit = async (data, e) => {
         let preparedData = {
@@ -146,8 +146,7 @@ export default function Category() {
                     console.log('cate id', x.category.id)
                     if (x.category.id === list.id) {
                         const temp2 = x;
-                        console.log('fdsssfd');
-                        console.log('fddggggggggggg', journalRef);
+                        console.log('journalRef', journalRef);
                         temp2.category.id = "unknown";
                         temp2.category.name = "Uncategorised";
                         await journalRef.doc(x.id)
@@ -160,8 +159,8 @@ export default function Category() {
                     }
                 })
             }
+            await categoryRef.doc(id).delete()
         }
-        await categoryRef.doc(id).delete()
     }
 
     const handleEditClick = (id, list) => {
@@ -187,97 +186,101 @@ export default function Category() {
     const handleCloseForm = () => { setShowForm(false) }
 
     return (
-        <Container>
-            <Row>
-                <Col>
-                    <h1 >Category Management</h1>
-                    <Button variant="outline-dark" onClick={handleshowForm}>
-                        <BsPlus /> Add
+        <div style={{ "marginTop": 1 + '%' }}>
+            <Container>
+                <Row>
+                    <Col>
+                        <h1 >Category Management</h1>
+                        <Button variant="outline-dark" onClick={handleshowForm}>
+                            <BsPlus /> Add
                 </Button>
-                </Col>
-            </Row>
-            <Table stickyheader="true" aria-label="sticky table">
-                <thead>
-                    <tr>
-                        <th>#</th>
-                        <th>Name</th>
-                        <th>Description</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {categoryState}
-                </tbody>
-            </Table>
+                    </Col>
+                </Row>
+                <div style={{ "marginTop": 3 + '%' }}>
+                    <Table stickyheader="true" aria-label="sticky table">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Name</th>
+                                <th>Description</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {categoryState}
+                        </tbody>
+                    </Table>
+                </div>
 
-            <Modal
-                show={showForm} onHide={handleCloseForm}
-                aria-labelledby="contained-modal-title-vcenter"
-                centered>
-                <form onSubmit={handleSubmit(onSubmit)}>
-                    <input
-                        type="hidden"
-                        placeholder="createdAt"
-                        ref={register({ required: false })}
-                        name="id"
-                        id="id"
-                        defaultValue={format(tempData.createdAt, "yyyy-MM-dd")}
-                    />
-                    <input
-                        type="hidden"
-                        placeholder="ID"
-                        ref={register({ required: false })}
-                        name="id"
-                        id="id"
-                        defaultValue={tempData.id}
-                    />
-                    <Modal.Header closeButton>
-                        <Modal.Title>
-                            {editMode ? "Edit Category" : "Add New Category"}
-                        </Modal.Title>
-                    </Modal.Header>
-                    <Modal.Body>
-                        <Row>
-                            <Col>
-                                <label htmlFor="name">Name</label>
-                            </Col>
-                            <Col>
-                                <input
-                                    type="text"
-                                    placeholder="Name"
-                                    ref={register({ required: true })}
-                                    name="name"
-                                    id="name"
-                                    defaultValue={tempData.name}
-                                />
-                            </Col>
-                        </Row>
-                        <Row>
-                            <Col>
-                                <label htmlFor="name">Description</label>
-                            </Col>
-                            <Col>
-                                <input
-                                    type="text"
-                                    placeholder="Description"
-                                    ref={register({ required: true })}
-                                    name="description"
-                                    id="description"
-                                    defaultValue={tempData.description}
-                                />
-                            </Col>
-                        </Row>
-                    </Modal.Body>
-                    <Modal.Footer>
-                        <Button variant="secondary" onClick={handleCloseForm}>
-                            Close
+                <Modal
+                    show={showForm} onHide={handleCloseForm}
+                    aria-labelledby="contained-modal-title-vcenter"
+                    centered>
+                    <form onSubmit={handleSubmit(onSubmit)}>
+                        <input
+                            type="hidden"
+                            placeholder="createdAt"
+                            ref={register({ required: false })}
+                            name="id"
+                            id="id"
+                            defaultValue={format(tempData.createdAt, "yyyy-MM-dd")}
+                        />
+                        <input
+                            type="hidden"
+                            placeholder="ID"
+                            ref={register({ required: false })}
+                            name="id"
+                            id="id"
+                            defaultValue={tempData.id}
+                        />
+                        <Modal.Header closeButton>
+                            <Modal.Title>
+                                {editMode ? "Edit Category" : "Add New Category"}
+                            </Modal.Title>
+                        </Modal.Header>
+                        <Modal.Body>
+                            <Row>
+                                <Col>
+                                    <label htmlFor="name">Name</label>
+                                </Col>
+                                <Col>
+                                    <input
+                                        type="text"
+                                        placeholder="Name"
+                                        ref={register({ required: true })}
+                                        name="name"
+                                        id="name"
+                                        defaultValue={tempData.name}
+                                    />
+                                </Col>
+                            </Row>
+                            <Row>
+                                <Col>
+                                    <label htmlFor="name">Description</label>
+                                </Col>
+                                <Col>
+                                    <input
+                                        type="text"
+                                        placeholder="Description"
+                                        ref={register({ required: true })}
+                                        name="description"
+                                        id="description"
+                                        defaultValue={tempData.description}
+                                    />
+                                </Col>
+                            </Row>
+                        </Modal.Body>
+                        <Modal.Footer>
+                            <Button variant="secondary" onClick={handleCloseForm}>
+                                Close
                         </Button>
-                        <Button variant="danger" type="submit">
-                            Add Category
-                        </Button> 
-                    </Modal.Footer>
-                </form>
-            </Modal>
-        </Container>
+                            <Button variant={editMode ? "success" : "primary"} type="submit">
+                                {editMode ? "Save Category" : "Add Category"}
+                            </Button>
+                        </Modal.Footer>
+                    </form>
+                </Modal>
+            </Container>
+        </div>
     )
 }
 

@@ -9,6 +9,7 @@ import { format } from 'date-fns'
 import { BsPlus, BsTrash, BsPencil } from "react-icons/bs";
 import { useForm } from "react-hook-form"
 import config from './config';
+import TextField from '@material-ui/core/TextField';
 
 // Firebase
 import { useCollectionData } from 'react-firebase-hooks/firestore';
@@ -51,9 +52,9 @@ export default function Journal() {
 
     useEffect(() => {
         if (categories) { // Guard condition
-            const tempCategories = [{id : 0, name : '-- All -- '}];
+            const tempCategories = [{ id: 0, name: '-- All -- ' }];
             categories.forEach((x) => {
-                tempCategories.push({id : x.id, name : x.name});
+                tempCategories.push({ id: x.id, name: x.name });
             })
             setCategoryOption(tempCategories);
         }
@@ -92,7 +93,7 @@ export default function Journal() {
                 t += d.amount
                 return (
                     <JournalRow data={d} i={i} onDeleteClick={handleDeleteClick}
-                    onEditClick={handleEditClick}/>
+                        onEditClick={handleEditClick} />
                 )
             })
 
@@ -192,146 +193,150 @@ export default function Journal() {
 
 
     return (
-        <Container>
-            <Row>
-                <Col>
-                    <h1>Journal</h1>
-                    <Button variant="outline-dark" onClick={handleshowForm}>
-                        <BsPlus /> Add
+        <div style={{"marginTop": 1 + '%'}}>
+            <Container>
+                <Row>
+                    <Col>
+                        <h1>Journal</h1>
+                        <Button variant="outline-dark" onClick={handleshowForm}>
+                            <BsPlus /> Add
                     </Button>
-                </Col>
-                <Col>
-                    Category:
+                    </Col>
+                    <Col>
+                        Category:
           <Select
-                        options={categoryOption}
-                        getOptionLabel={x => x.name}
-                        getOptionValue={x => x.id}
-                        onChange={handleCategoryFilterChange}
-                    />
-                </Col>
+                            options={categoryOption}
+                            getOptionLabel={x => x.name}
+                            getOptionValue={x => x.id}
+                            onChange={handleCategoryFilterChange}
+                        />
+                    </Col>
 
-            </Row>
+                </Row>
+                <div style={{"marginTop": 3 + '%'}}>
+                <Table striped hover>
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Date</th>
+                            <th>Description</th>
+                            <th>Category</th>
+                            <th>Amount</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {records}
+                    </tbody>
+                    <tfooter>
+                        <td colSpan={5}>
+                            <h3>Total: {total}</h3>
+                        </td>
+                    </tfooter>
+                </Table>
+                </div>
 
-            <Table striped bordered hover variant="dark">
-                <thead>
-                    <tr>
-                        <th>#</th>
-                        <th>Date</th>
-                        <th>Description</th>
-                        <th>Category</th>
-                        <th>Amount</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {records}
-                </tbody>
-                <tfooter>
-                    <td colSpan={5}>
-                        <h2>Total: {total}</h2>
-                    </td>
-                </tfooter>
-            </Table>
 
+                <Modal
+                    show={showForm} onHide={handleCloseForm}
+                    aria-labelledby="contained-modal-title-vcenter"
+                    centered>
+                    <form onSubmit={handleSubmit(onSubmit)}>
+                        <input
+                            type="hidden"
+                            placeholder="ID"
+                            ref={register({ required: false })}
+                            name="id"
+                            id="id"
+                            defaultValue={tempData.id}
+                        />
+                        <Modal.Header closeButton>
+                            <Modal.Title>
+                                {editMode ? "Edit Record" : "Add New Record"}
+                            </Modal.Title>
+                        </Modal.Header>
+                        <Modal.Body>
+                            <Row>
+                                <Col>
+                                    <label htmlFor="createdAt">Date</label>
+                                </Col>
+                                <Col>
+                                    <input
+                                        type="date"
+                                        placeholder="Date"
+                                        ref={register({ required: true })}
+                                        name="createdAt"
+                                        id="createdAt"
+                                        defaultValue={format(tempData.createdAt, "yyyy-MM-dd")}
+                                    />
 
-            <Modal
-                show={showForm} onHide={handleCloseForm}
-                aria-labelledby="contained-modal-title-vcenter"
-                centered>
-                <form onSubmit={handleSubmit(onSubmit)}>
-                    <input
-                        type="hidden"
-                        placeholder="ID"
-                        ref={register({ required: false })}
-                        name="id"
-                        id="id"
-                        defaultValue={tempData.id}
-                    />
-                    <Modal.Header closeButton>
-                        <Modal.Title>
-                            {editMode ? "Edit Record" : "Add New Record"}
-                        </Modal.Title>
-                    </Modal.Header>
-                    <Modal.Body>
-                        <Row>
-                            <Col>
-                                <label htmlFor="createdAt">Date</label>
-                            </Col>
-                            <Col>
-                                <input
-                                    type="date"
-                                    placeholder="Date"
-                                    ref={register({ required: true })}
-                                    name="createdAt"
-                                    id="createdAt"
-                                    defaultValue={format(tempData.createdAt, "yyyy-MM-dd")}
-                                />
+                                </Col>
+                            </Row>
 
-                            </Col>
-                        </Row>
+                            <Row>
+                                <Col>
+                                    <label htmlFor="category">Category</label>
+                                </Col>
+                                <Col>
+                                    <Select
+                                        id="category"
+                                        name="category"
+                                        value={category}
+                                        placeholder="Category"
+                                        options={categoryOption.filter(c => c.id != 0)}
+                                        onChange={handleCategoryChange}
+                                        getOptionLabel={x => x.name}
+                                        getOptionValue={x => x.id}
+                                        ref={register}
+                                    />
+                                </Col>
+                            </Row>
 
-                        <Row>
-                            <Col>
-                                <label htmlFor="category">Category</label>
-                            </Col>
-                            <Col>
-                                <Select
-                                    id="category"
-                                    name="category"
-                                    value={category}
-                                    placeholder="Category"
-                                    options={categoryOption.filter(c => c.id != 0)}
-                                    onChange={handleCategoryChange}
-                                    getOptionLabel={x => x.name}
-                                    getOptionValue={x => x.id}
-                                    ref={register}
-                                />
-                            </Col>
-                        </Row>
-
-                        <Row>
-                            <Col>
-                                <label htmlFor="description">Description</label>
-                            </Col>
-                            <Col>
-                                <input
-                                    type="text"
-                                    placeholder="Description"
-                                    ref={register({ required: true })}
-                                    name="description"
-                                    id="description"
-                                    defaultValue={tempData.description}
-                                />
-                            </Col>
-                        </Row>
-                        <Row>
-                            <Col>
-                                <label htmlFor="amount">Amount</label>
-                            </Col>
-                            <Col>
-                                <input
-                                    type="number"
-                                    step="any"
-                                    min="0"
-                                    placeholder="Amount"
-                                    ref={register({ required: true })}
-                                    name="amount"
-                                    id="amount"
-                                    defaultValue={tempData.amount}
-                                />
-                            </Col>
-                        </Row>
-                    </Modal.Body>
-                    <Modal.Footer>
-                        <Button variant="secondary" onClick={handleCloseForm}>
-                            Close
+                            <Row>
+                                <Col>
+                                    <label htmlFor="description">Description</label>
+                                </Col>
+                                <Col>
+                                    {/* <input
+                                        type="text"
+                                        placeholder="Description"
+                                        ref={register({ required: true })}
+                                        name="description"
+                                        id="description"
+                                        defaultValue={tempData.description}
+                                    /> */}
+                                    <TextField id="standard-basic" label="Standard" inputRef={register({ required: true })} name="description" />
+                                </Col>
+                            </Row>
+                            <Row>
+                                <Col>
+                                    <label htmlFor="amount">Amount</label>
+                                </Col>
+                                <Col>
+                                    <input
+                                        type="number"
+                                        step="any"
+                                        min="0"
+                                        placeholder="Amount"
+                                        ref={register({ required: true })}
+                                        name="amount"
+                                        id="amount"
+                                        defaultValue={tempData.amount}
+                                    />
+                                </Col>
+                            </Row>
+                        </Modal.Body>
+                        <Modal.Footer>
+                            <Button variant="secondary" onClick={handleCloseForm}>
+                                Close
                         </Button>
-                        <Button onClick={onModalFormSubmit(editMode, handleSubmit, onSubmit)} variant={editMode ? "success" : "primary"} type="submit">
-                            {editMode ? "Save Record" : "Add Record"}
-                        </Button>
-                    </Modal.Footer>
-                </form>
-            </Modal>
-        </Container>
+                            <Button onClick={onModalFormSubmit(editMode, handleSubmit, onSubmit)} variant={editMode ? "success" : "primary"} type="submit">
+                                {editMode ? "Save Record" : "Add Record"}
+                            </Button>
+                        </Modal.Footer>
+                    </form>
+                </Modal>
+            </Container>
+        </div>
     )
 }
 

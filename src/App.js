@@ -1,7 +1,8 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { Container,
-   Navbar, Nav, NavDropdown,
- } from 'react-bootstrap';
+import {
+  Container,
+  Navbar, Nav, NavDropdown,
+} from 'react-bootstrap';
 import {
   BrowserRouter as Router,
   Switch,
@@ -45,7 +46,11 @@ function App() {
 
 function Home() {
   return (
-    <h1>Home</h1>
+    <div>
+      <Container>
+        <h1>Home</h1>
+      </Container>
+    </div>
   )
 }
 export default App;
