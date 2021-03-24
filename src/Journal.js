@@ -268,23 +268,7 @@ export default function Journal() {
                             </Modal.Title>
                         </Modal.Header>
                         <Modal.Body>
-                            {/* <Row>
-                                <Col>
-                                    <label htmlFor="createdAt">Date</label>
-                                </Col>
-                                <Col>
-                                    <input
-                                        type="date"
-                                        placeholder="Date"
-                                        ref={register({ required: true })}
-                                        name="createdAt"
-                                        id="createdAt"
-                                        defaultValue={format(tempData.createdAt, "yyyy-MM-dd")}
-                                    />
-
-                                </Col>
-                            </Row> */}
-
+                           
                             <Row>
                                 <Col>
                                     <TextField style={{ margin: 8 }}
@@ -295,25 +279,7 @@ export default function Journal() {
                                 </Col>
                             </Row>
 
-                            {/* <Row>
-                                <Col>
-                                    <TextField style={{ margin: 8 }}
-                                        select fullWidth variant="outlined"
-                                        label="Select Category"
-                                        inputRef={register}
-                                        name="category"
-                                        value= {tempData.category}
-                                    >
-                                        {categoryOption && categoryOption.map((option) => (
-                                            option.id != 0  &&
-                                            <MenuItem key={option.id} value={option.id}>
-                                                {option.name}
-                                            </MenuItem>
-                                        ))}
-                                    </TextField>
-                                </Col>
-                            </Row> */}
-
+                          
                             <Row>
                                 <Col>
                                     <TextField style={{ margin: 8 }}

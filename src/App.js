@@ -1,13 +1,12 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 import {
   Container,
-  Navbar, Nav, NavDropdown,
+  Navbar, Nav
 } from 'react-bootstrap';
 import {
   HashRouter as Router,
   Switch,
   Route,
-  Link
 } from "react-router-dom";
 
 import Category from './Category';

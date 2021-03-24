@@ -239,22 +239,7 @@ export default function Category() {
                             </Modal.Title>
                         </Modal.Header>
                         <Modal.Body>
-                            {/* <Row>
-                                <Col>
-                                    <label htmlFor="name">Name</label>
-                                </Col>
-                                <Col>
-                                    <input
-                                        type="text"
-                                        placeholder="Name"
-                                        ref={register({ required: true })}
-                                        name="name"
-                                        id="name"
-                                        defaultValue={tempData.name}
-                                    />
-                                </Col>
-                            </Row> */}
-
+                           
                             <Row>
                                 <Col>
                                     <TextField style={{ margin: 8 }}
@@ -264,21 +249,7 @@ export default function Category() {
                                         name="name" />
                                 </Col>
                             </Row>
-                            {/* <Row>
-                                <Col>
-                                    <label htmlFor="name">Description</label>
-                                </Col>
-                                <Col>
-                                    <input
-                                        type="text"
-                                        placeholder="Description"
-                                        ref={register({ required: true })}
-                                        name="description"
-                                        id="description"
-                                        defaultValue={tempData.description}
-                                    />
-                                </Col>
-                            </Row> */}
+                            
                             <Row>
                                 <Col>
                                     <TextField style={{ margin: 8 }}
